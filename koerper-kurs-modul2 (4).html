@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.svg">
+<title>Modul 2 – Mein Nervensystem kennenlernen · Was mein Körper mir sagen will</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #B8935A;
+  --gold-light: #D4AF7A;
+  --gold-pale: #F0E6D3;
+  --gold-ultra: #FBF5EC;
+  --cream: #FAF6F0;
+  --warm-white: #FFFDF9;
+  --brown-deep: #5C3D1E;
+  --brown-mid: #7A5230;
+  --brown-light: #A67C52;
+  --text: #3A2A1A;
+  --text-light: #7A6A5A;
+  --border: #E2D5C3;
+  --shadow-soft: 0 2px 12px rgba(92,61,30,0.07);
+
+  /* Ampel-Farben */
+  --gruen: #5A8A6A;
+  --gruen-pale: #EAF4ED;
+  --gruen-border: #A8CEB4;
+  --gelb: #B89040;
+  --gelb-pale: #FBF5E0;
+  --gelb-border: #D4B870;
+  --rot: #A05050;
+  --rot-pale: #FAF0EE;
+  --rot-border: #C89090;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  font-weight: 300;
+}
+
+/* ── NAV ── */
+.top-nav {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nav-back {
+  font-size: 12px;
+  color: var(--text-light);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--gold); }
+.nav-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--brown-deep);
+  font-weight: 400;
+}
+.nav-sep { color: var(--border); margin: 0 2px; }
+
+/* ── MODULE PROGRESS BAR ── */
+.progress-strip {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.prog-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  color: var(--text-light);
+  flex-shrink: 0;
+  font-family: 'Cormorant Garamond', serif;
+  transition: all 0.2s;
+  cursor: default;
+}
+.prog-dot.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+  font-weight: 500;
+}
+.prog-dot.done {
+  background: var(--gold-pale);
+  border-color: var(--gold-light);
+  color: var(--brown-light);
+}
+.prog-line { flex: 1; height: 1px; background: var(--border); min-width: 12px; flex-shrink: 0; }
+
+/* ── HERO ── */
+.module-hero {
+  background: linear-gradient(160deg, #FAF6F0 0%, #F0E6D3 60%, #E8D5B8 100%);
+  padding: 48px 24px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.module-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  border: 1px solid rgba(184,147,90,0.12);
+}
+.module-eyebrow {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--brown-light);
+  margin-bottom: 12px;
+}
+.module-hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px, 6vw, 42px);
+  font-weight: 300;
+  color: var(--brown-deep);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.module-hero h1 em { font-style: italic; color: var(--gold); }
+.module-hero-sub {
+  font-size: 14px;
+  color: var(--text-light);
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+.kernbotschaft {
+  margin: 24px auto 0;
+  max-width: 480px;
+  background: rgba(255,253,249,0.7);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--brown-deep);
+  line-height: 1.6;
+}
+.kernbotschaft::before {
+  content: '✦';
+  display: block;
+  font-size: 11px;
+  color: var(--gold);
+  margin-bottom: 8px;
+  font-style: normal;
+  letter-spacing: 2px;
+}
+
+/* ── MAIN ── */
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.content-card {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+.content-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--gold), var(--gold-light));
+}
+
+.card-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--brown-deep);
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+.card-text {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.85;
+}
+.card-text p { margin-bottom: 10px; }
+.card-text p:last-child { margin-bottom: 0; }
+
+/* ── AUDIO ── */
+.audio-card {
+  background: var(--gold-ultra);
+  border: 1.5px solid var(--gold-light);
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.audio-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--gold), var(--gold-light));
+}
+.audio-icon-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.audio-icon {
+  width: 44px; height: 44px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.audio-icon svg { width: 18px; height: 18px; }
+.audio-meta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--brown-deep);
+  line-height: 1.2;
+}
+.audio-meta-sub { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+.audio-hint {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 14px;
+  line-height: 1.65;
+  font-style: italic;
+}
+
+/* Platzhalter wenn noch kein Audio */
+.audio-placeholder {
+  background: var(--warm-white);
+  border: 1.5px dashed var(--gold-light);
+  border-radius: 10px;
+  padding: 16px 18px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+.audio-placeholder span { color: var(--gold); font-weight: 400; }
+
+audio {
+  width: 100%;
+  border-radius: 8px;
+  accent-color: var(--gold);
+  height: 44px;
+}
+
+/* ── AMPELKARTE ── */
+.ampel-karte {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+.ampel-zone {
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.ampel-zone.gruen {
+  background: var(--gruen-pale);
+  border: 1px solid var(--gruen-border);
+}
+.ampel-zone.gelb {
+  background: var(--gelb-pale);
+  border: 1px solid var(--gelb-border);
+}
+.ampel-zone.rot {
+  background: var(--rot-pale);
+  border: 1px solid var(--rot-border);
+}
+.ampel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.ampel-kreis {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ampel-zone.gruen .ampel-kreis { background: var(--gruen); }
+.ampel-zone.gelb .ampel-kreis { background: var(--gelb); }
+.ampel-zone.rot .ampel-kreis { background: var(--rot); }
+.ampel-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 500;
+}
+.ampel-zone.gruen .ampel-name { color: var(--gruen); }
+.ampel-zone.gelb .ampel-name { color: var(--gelb); }
+.ampel-zone.rot .ampel-name { color: var(--rot); }
+.ampel-desc {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+.ampel-signale {
+  font-size: 12px;
+  color: var(--text-light);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ── CHECK-IN ── */
+.checkin-frage {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.checkin-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.checkin-btn {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.checkin-btn:hover { border-color: var(--gold-light); color: var(--gold); }
+.checkin-btn.selected-gruen { border-color: var(--gruen); background: var(--gruen-pale); color: var(--gruen); }
+.checkin-btn.selected-gelb { border-color: var(--gelb); background: var(--gelb-pale); color: var(--gelb); }
+.checkin-btn.selected-rot { border-color: var(--rot); background: var(--rot-pale); color: var(--rot); }
+.checkin-antwort {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.75;
+  padding: 14px 16px;
+  border-radius: 10px;
+  display: none;
+}
+.checkin-antwort.gruen { background: var(--gruen-pale); border: 1px solid var(--gruen-border); color: var(--gruen); }
+.checkin-antwort.gelb { background: var(--gelb-pale); border: 1px solid var(--gelb-border); color: var(--gelb); }
+.checkin-antwort.rot { background: var(--rot-pale); border: 1px solid var(--rot-border); color: var(--rot); }
+
+/* ── JOURNAL ── */
+.journal-list { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+.journal-q {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.journal-q::before { content: '→ '; color: var(--gold); font-size: 12px; }
+textarea {
+  width: 100%;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.65;
+  transition: border 0.2s;
+}
+textarea:focus { outline: none; border-color: var(--gold-light); }
+textarea::placeholder { color: var(--border); font-style: italic; }
+.save-hint {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 14px;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* ── DAILY ── */
+.daily-box {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-top: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.daily-icon { font-size: 20px; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+.daily-text strong { font-size: 13px; font-weight: 500; color: var(--brown-deep); display: block; margin-bottom: 4px; }
+.daily-text span { font-size: 13px; color: var(--text-light); line-height: 1.65; }
+
+/* ── NAV BUTTONS ── */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-ghost {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  padding: 11px 24px;
+  border-radius: 28px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.25s;
+  letter-spacing: 0.03em;
+}
+.btn-ghost:hover { border-color: var(--gold-light); color: var(--gold); }
+.btn-next {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  padding: 12px 28px;
+  border-radius: 28px;
+  border: none;
+  background: var(--brown-deep);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.25s;
+  letter-spacing: 0.04em;
+}
+.btn-next:hover { background: var(--brown-mid); transform: translateY(-1px); }
+
+footer {
+  text-align: center;
+  padding: 28px 24px;
+  border-top: 1px solid var(--border);
+}
+footer p { font-size: 11px; color: var(--text-light); line-height: 1.7; }
+footer a { color: var(--gold); text-decoration: none; }
+
+@media (max-width: 500px) {
+  .content-card, .audio-card { padding: 20px 18px; }
+  .nav-buttons { flex-direction: column; align-items: stretch; text-align: center; }
+  .btn-ghost, .btn-next { width: 100%; text-align: center; }
+  .checkin-buttons { flex-direction: column; }
+  .checkin-btn { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Kursübersicht
+  </a>
+  <span class="nav-sep">·</span>
+  <span class="nav-title">Was mein Körper mir sagen will</span>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-strip">
+  <div class="prog-dot done">1</div>
+  <div class="prog-line"></div>
+  <div class="prog-dot active">2</div>
+  <div class="prog-line"></div>
+  <div class="prog-dot">3</div>
+  <div class="prog-line"></div>
+  <div class="prog-dot">4</div>
+  <div class="prog-line"></div>
+  <div class="prog-dot">5</div>
+  <div class="prog-line"></div>
+  <div class="prog-dot">6</div>
+  <div class="prog-line"></div>
+  <div class="prog-dot">7</div>
+</div>
+
+<!-- HERO -->
+<div class="module-hero">
+  <div class="module-eyebrow">Modul 2 · Mein Nervensystem kennenlernen</div>
+  <h1>Polyvagaltheorie<br><em>alltagsnah verstehen</em></h1>
+  <p class="module-hero-sub">Dein Nervensystem ist kein Feind — es ist dein ältester Beschützer. In diesem Modul lernst du, seine Sprache zu verstehen.</p>
+  <div class="kernbotschaft">
+    Du bist nicht schwach — dein Nervensystem tut genau das, wofür es gebaut wurde.
+  </div>
+</div>
+
+<main>
+
+  <!-- EINFÜHRUNG -->
+  <div class="content-card">
+    <div class="card-label">Einstieg</div>
+    <div class="card-title">Dein Nervensystem — dein ältester Freund</div>
+    <div class="card-text">
+      <p>Vielleicht kennst du das: Du reagierst in einer Situation stärker als "eigentlich nötig" — wirst schnell gereizt, ziehst dich zurück, fühlst dich wie eingefroren. Und dann fragst du dich: Was ist mit mir los?</p>
+      <p>Die Antwort: Nichts ist mit dir los. Dein Nervensystem arbeitet genau so, wie es soll. Es hat über Millionen von Jahren gelernt, dich zu schützen — und es tut das, auch wenn die "Gefahr" heute nur eine schwierige E-Mail ist.</p>
+      <p>Die Polyvagaltheorie (entwickelt von Stephen Porges, alltagsnah aufbereitet u.a. durch Deb Dana) beschreibt drei Zustände, in denen wir uns befinden können. Wenn du diese Zustände kennst, verstehst du dich selbst viel besser — ohne Selbstvorwürfe.</p>
+    </div>
+  </div>
+
+  <!-- AMPELKARTE -->
+  <div class="content-card">
+    <div class="card-label">Das Modell</div>
+    <div class="card-title">Die Ampelkarte deines Nervensystems</div>
+    <div class="card-text">
+      <p>Stell dir dein Nervensystem als Ampel vor — drei Zustände, die jeweils ihren Sinn haben.</p>
+    </div>
+    <div class="ampel-karte">
+
+      <div class="ampel-zone gruen">
+        <div class="ampel-header">
+          <div class="ampel-kreis"></div>
+          <div class="ampel-name">Grün · Sicher & verbunden</div>
+        </div>
+        <div class="ampel-desc">Du fühlst dich ruhig, offen, präsent. Du kannst denken, fühlen, in Kontakt treten. Das ist der Zustand, in dem Wachstum, Kreativität und echte Verbindung möglich sind.</div>
+        <div class="ampel-signale">Körpersignale: ruhiger Atem, entspannte Schultern, weicher Blick, Lachen, Neugier</div>
+      </div>
+
+      <div class="ampel-zone gelb">
+        <div class="ampel-header">
+          <div class="ampel-kreis"></div>
+          <div class="ampel-name">Gelb · Mobilisiert & angespannt</div>
+        </div>
+        <div class="ampel-desc">Dein System ist in Alarmbereitschaft — kämpfen oder fliehen. Du bist gereizt, ängstlich, rastlos, überdreht. Dein Körper bereitet sich auf Aktion vor.</div>
+        <div class="ampel-signale">Körpersignale: flacher Atem, angespannte Schultern, Herzrasen, Gedankenrasen, Ungeduld</div>
+      </div>
+
+      <div class="ampel-zone rot">
+        <div class="ampel-header">
+          <div class="ampel-kreis"></div>
+          <div class="ampel-name">Rot · Abgeschaltet & erschöpft</div>
+        </div>
+        <div class="ampel-desc">Wenn Kämpfen oder Fliehen nicht mehr möglich ist, schaltet das System ab — erstarren, kollabieren, dissozieren. Du fühlst dich leer, taub, schwer, hoffnungslos.</div>
+        <div class="ampel-signale">Körpersignale: schwere Glieder, flache Atmung, Taubheitsgefühl, Rückzug, Antriebslosigkeit</div>
+      </div>
+
+    </div>
+
+    <!-- CHECK-IN -->
+    <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
+      <div class="checkin-frage">Wo befindest du dich gerade — in diesem Moment?</div>
+      <div class="checkin-buttons">
+        <button class="checkin-btn" onclick="checkin('gruen')">🟢 Grün</button>
+        <button class="checkin-btn" onclick="checkin('gelb')">🟡 Gelb</button>
+        <button class="checkin-btn" onclick="checkin('rot')">🔴 Rot</button>
+      </div>
+      <div class="checkin-antwort gruen" id="antwort-gruen">
+        Schön. Bleib einen Moment in diesem Grün — und nimm wahr, was diesen Zustand möglich macht. Was hilft dir, hier zu sein?
+      </div>
+      <div class="checkin-antwort gelb" id="antwort-gelb">
+        Das Gelb ist da — und das ist in Ordnung. Dein System ist wachsam. Kannst du dreimal langsam ausatmen, länger als du einatmest? Das signalisiert deinem Nervensystem: Gefahr vorbei.
+      </div>
+      <div class="checkin-antwort rot" id="antwort-rot">
+        Du bist im Rot — und das braucht Sanftheit, keine Anstrengung. Leg eine Hand auf dein Herz. Spür die Wärme. Du bist hier. Du bist sicher genug, um das zu lesen.
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO -->
+  <div class="audio-card">
+    <div class="audio-icon-wrap">
+      <div class="audio-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 18V6l13-3v12" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="6" cy="18" r="3" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="19" cy="15" r="3" stroke="#fff" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="audio-meta-title">Geführte Ampelkarten-Übung</div>
+        <div class="audio-meta-sub">Wo bin ich gerade? · ca. 5 Minuten</div>
+      </div>
+    </div>
+    <p class="audio-hint">Nimm dir einen ruhigen Moment. Diese Übung begleitet dich dabei, deinen aktuellen Zustand bewusst wahrzunehmen — ohne ihn verändern zu müssen.</p>
+    <audio controls preload="metadata" style="width:100%;border-radius:8px;accent-color:var(--gold);height:44px;">
+      <source src="https://res.cloudinary.com/uexwcug8/video/upload/v1789317719/ampelkarte-modul2.3gp" type="video/3gpp">
+    </audio>
+  </div>
+
+  <!-- ÜBUNG -->
+  <div class="content-card">
+    <div class="card-label">Deine Übung</div>
+    <div class="card-title">Das Zustandsbarometer</div>
+    <div class="card-text">
+      <p>Drei Mal täglich — morgens, mittags, abends — halte kurz inne und frage dich: Welche Farbe bin ich gerade?</p>
+      <p>Das dauert nur 10 Sekunden. Kein Tagebuch nötig, kein Ergebnis erwartet. Nur: innehalten, wahrnehmen, benennen.</p>
+      <p>Warum das hilft? Weil Benennen reguliert. Schon das Wort "Gelb" aktiviert deinen denkenden Kortex — und bringt dich einen Schritt aus der reinen Reaktion heraus.</p>
+    </div>
+    <div class="daily-box">
+      <div class="daily-icon">🚦</div>
+      <div class="daily-text">
+        <strong>3 × täglich · je 10 Sekunden</strong>
+        <span>Morgens aufwachen: Welche Farbe? Mittags kurze Pause: Welche Farbe? Abends vor dem Schlaf: Welche Farbe?</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOURNAL -->
+  <div class="content-card">
+    <div class="card-label">Dein Journal</div>
+    <div class="card-title">Drei Fragen zum Nachspüren</div>
+    <div class="card-text">
+      <p>Schreib auf, was dir kommt — ohne Zensur, ohne richtige Antworten.</p>
+    </div>
+    <div class="journal-list">
+      <div class="journal-item">
+        <div class="journal-q">Welcher Zustand überwiegt bei mir im Alltag — Grün, Gelb oder Rot?</div>
+        <textarea id="q1" placeholder="Schreib hier, was dir kommt …" oninput="save('q1',this.value)"></textarea>
+      </div>
+      <div class="journal-item">
+        <div class="journal-q">In welchen Situationen fühle ich mich wirklich sicher?</div>
+        <textarea id="q2" placeholder="Schreib hier, was dir kommt …" oninput="save('q2',this.value)"></textarea>
+      </div>
+      <div class="journal-item">
+        <div class="journal-q">Was hat mein Nervensystem in meinem Leben schon alles gemeistert?</div>
+        <textarea id="q3" placeholder="Schreib hier, was dir kommt …" oninput="save('q3',this.value)"></textarea>
+      </div>
+    </div>
+    <p class="save-hint">Deine Antworten werden lokal auf diesem Gerät gespeichert.</p>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="nav-buttons">
+    <a href="koerper-kurs.html" class="btn-ghost">← Modul 1</a>
+    <a href="#" class="btn-next" onclick="markDone();return false;">Modul 2 abschließen →</a>
+  </div>
+
+</main>
+
+<footer>
+  <p>
+    <strong>Mein Veränderungsweg</strong> · Tanja ·
+    <a href="https://veraenderungsweg.de" target="_blank">veraenderungsweg.de</a>
+  </p>
+  <p style="margin-top:6px;">Dieser Kurs ersetzt keine ärztliche oder psychotherapeutische Behandlung.</p>
+</footer>
+
+<script>
+const KEY = 'koerper_m2_';
+
+function save(id, val) {
+  try { localStorage.setItem(KEY + id, val); } catch(e) {}
+}
+
+function load() {
+  ['q1','q2','q3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    try { const v = localStorage.getItem(KEY + id); if (v) el.value = v; } catch(e) {}
+  });
+}
+
+function checkin(farbe) {
+  // Alle Antworten ausblenden
+  ['gruen','gelb','rot'].forEach(f => {
+    document.getElementById('antwort-' + f).style.display = 'none';
+  });
+  // Alle Buttons zurücksetzen
+  document.querySelectorAll('.checkin-btn').forEach(b => {
+    b.className = 'checkin-btn';
+  });
+  // Gewählte Antwort zeigen
+  document.getElementById('antwort-' + farbe).style.display = 'block';
+  // Gewählten Button markieren
+  const btns = document.querySelectorAll('.checkin-btn');
+  const idx = farbe === 'gruen' ? 0 : farbe === 'gelb' ? 1 : 2;
+  btns[idx].classList.add('selected-' + farbe);
+  // In localStorage speichern
+  try { localStorage.setItem('koerper_m2_checkin', farbe); } catch(e) {}
+}
+
+function markDone() {
+  try { localStorage.setItem('koerper_modul2_done', '1'); } catch(e) {}
+  alert('✓ Modul 2 abgeschlossen! Gut gemacht.\n\nModul 3 folgt in Kürze.');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  load();
+  // Letzten Check-in wiederherstellen
+  try {
+    const f = localStorage.getItem('koerper_m2_checkin');
+    if (f) checkin(f);
+  } catch(e) {}
+});
+</script>
+
+</body>
+</html>
